@@ -35,18 +35,26 @@
 								}
 							}
 							tbl += "</tr></table>";
+							tbl += '<BR/><a download="sequnce_number.csv" href="#" onclick="return ExcellentExport.csv(this, \'sequence_number\');">Export to CSV</a>'
 
 							$('#result').show()
 							$('#len').html(tbl) 
 						},
-						error: function(request) {
-							alert(request.responseJSON.messageqXHR)
+						error: function(response) {
+							$('#result').show()
+							$('#len').html("<p class = 'error'>ERROR!</p>") 
 						}
 					});
 				}
 		</script>
 	<div class ='container'>
     <div class="testbox">
+	  <div class="banner">
+		<h1>Sequence number</h1>
+		<p>The script calculates the number of amino acids sequences 
+			reachable by a given number of nucleotide substitution</p>
+		<p><a href = 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0182525' target = '_blank'>Article link</a></p>
+	  </div>
       <form method="post" role="input_form">
         <div class="colums">
           <div class="item">
@@ -102,7 +110,6 @@
 		<div id = 'len'>
 		</div>
 		<br/>
-		<a download="sequnce_number.csv" href="#" onclick="return ExcellentExport.csv(this, 'sequence_number');">Export to CSV</a>
 
 	</div>
 </div>

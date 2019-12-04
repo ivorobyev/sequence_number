@@ -7,16 +7,11 @@
       outline: none;
       font-family: Roboto, Arial, sans-serif;
       font-size: 14px;
-      color: #666;
+      color: #222;
       line-height: 22px;
       }
       h1 {
-      position: absolute;
-      margin: 0;
-      font-size: 40px;
-      color: #fff;
-      z-index: 2;
-      line-height: 83px;
+      color: #222;
       }
       textarea {
       width: calc(70% - 12px);
@@ -43,31 +38,22 @@
       margin: 10px 0 0 0;
       width: 100%;
       border-radius: 6px;
-      box-shadow: 0 0 8px #669999;
+      box-shadow: 0 0 5px #A2BE15;
       }
       form {
       width: 100%;
       padding: 20px;
       border-radius: 6px;
       background: #fff;
-      box-shadow: 0 0 8px  #669999; 
+      box-shadow: 0 0 5px  #A2BE15; 
       }
       .banner {
-      position: relative;
-      height: 300px;
-      background-image: url("/uploads/media/default/0001/02/8070c999efd1a155ad843379a5508d16f544aeaf.jpeg");  
-      background-size: cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      }
-      .banner::after {
-      content: "";
-      background-color: rgba(0, 0, 0, 0.3); 
-      position: absolute;
+      display: block;
+      padding: 20px;
+      margin: 10px 0 10px 0;
       width: 100%;
-      height: 100%;
+      border-radius: 6px;
+      box-shadow: 0 0 5px #A2BE15;
       }
       input, select, textarea {
       margin-bottom: 10px;
@@ -86,12 +72,12 @@
       padding: 5px;
       }
       .item:hover p, .item:hover i, .question:hover p, .question label:hover, input:hover::placeholder {
-      color:  #669999;
+      color:  #A2BE15;
       }
       .item input:hover, .item select:hover, .item textarea:hover {
       border: 1px solid transparent;
-      box-shadow: 0 0 3px 0  #669999;
-      color: #669999;
+      box-shadow: 0 0 3px 0  #A2BE15;
+      color: #A2BE15;
       }
       .item {
       position: relative;
@@ -130,7 +116,7 @@
       display: none;
       }
       input[type=number]{
-      width: 30px !important;
+      width: 70px !important;
       }
       label.radio {
       position: relative;
@@ -154,7 +140,7 @@
       border: 2px solid #ccc;
       }
       input[type=radio]:checked + label:before, label.radio:hover:before {
-      border: 2px solid  #669999;
+      border: 2px solid  #A2BE15;
       }
       label.radio:after {
       content: "";
@@ -163,7 +149,7 @@
       left: 5px;
       width: 8px;
       height: 4px;
-      border: 3px solid  #669999;
+      border: 3px solid  #A2BE15;
       border-top: none;
       border-right: none;
       transform: rotate(-45deg);
@@ -185,7 +171,7 @@
       padding: 10px;
       border: none;
       border-radius: 5px; 
-      background:  #669999;
+      background:  #A2BE15;
       font-size: 16px;
       color: #fff;
       cursor: pointer;
@@ -201,8 +187,12 @@
       }
       th, td {
       padding: 20px;
-      border: 1px solid #669999;
+      border: 1px solid #A2BE15;
       border-radius: 1em;
+      }
+
+      .error{
+      color: red;
       }
 
       @media (min-width: 568px) {

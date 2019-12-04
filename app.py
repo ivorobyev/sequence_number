@@ -14,12 +14,8 @@ def calculate():
     codon_table = sn.get_codon_table(request.form['codon_table'])
     max_nmut = int(request.form['max_mutations'])
 
-    if len(seq)%3 != 3:
-        raise Exception('Number of nucleotides doesn\'t divide into 3')
-
     s = sn.get_sequence_number(seq, mutate_first_codon, max_nmut, codon_table)
     return s
 
 if __name__ == '__main__':
     app.run()
-    
