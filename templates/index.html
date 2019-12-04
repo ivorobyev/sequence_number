@@ -6,19 +6,26 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<script src="{{ url_for('static', filename='js/excellentexport.min.js') }}"></script>
   </head>
   <body>
 		<script>
 				function calculate() {
+					if ($.trim($('#name').val()) == ""){
+						alert('Empty sequence')
+						exit()
+					}
+					
 					$.ajax({
 						url: "/calc",
 						data: $('form').serialize(),
 						type: 'POST',
 						success: function(response) {
+							response = response.trim()
 							seq_numbers = response.split(' ')
 							
 							var perrow = 3,
-							tbl = "<table><tr><th>Number of nucleotide mutaions</th><th>Possible amino acid sequences</th><th>Integral number of amino acid sequences</th></tr><tr>";
+							tbl = "<table id = 'sequence_number'><tr><th>Number of nucleotide mutaions</th><th>Possible amino acid sequences</th><th>Integral number of amino acid sequences</th></tr><tr>";
 
 							for (var i=0; i<seq_numbers.length; i++) {
 								tbl += "<td>" + seq_numbers[i] + "</td>";
@@ -29,15 +36,16 @@
 							}
 							tbl += "</tr></table>";
 
-
+							$('#result').show()
 							$('#len').html(tbl) 
 						},
-						error: function(error) {
-							$('#len').html(error) 
+						error: function(request) {
+							alert(request.responseJSON.messageqXHR)
 						}
 					});
 				}
 		</script>
+	<div class ='container'>
     <div class="testbox">
       <form method="post" role="input_form">
         <div class="colums">
@@ -81,24 +89,23 @@
 		<div class="question">
 			<label>Maximum number of considered nucleotide substitutions</label>
 			<div class="question-answer">
-				<input type="number" name="max_mutations" step="1" default = "1">
+				<input type="number" name="max_mutations" step="1" min = "1" value = "1">
 			</div>
 		</div>
 
         <div class="btn-block">
 		  <input type="button" value="Calculate" onclick="calculate()">
 		</div>
-	</div>
+	
 	  </form>
-	</div>
-
-	<div class = 'testbox'>
+	  <div id = 'result'>
 		<div id = 'len'>
 		</div>
-		<div id = 'test'>
-			</div>
-		
-	</div>
+		<br/>
+		<a download="sequnce_number.csv" href="#" onclick="return ExcellentExport.csv(this, 'sequence_number');">Export to CSV</a>
 
+	</div>
+</div>
+</div>
   </body>
 </html>

@@ -22,12 +22,28 @@
       width: calc(70% - 12px);
       padding: 5px;
       }
+      .container{
+            max-width: 1000px;
+            margin: 50px 20% 0 20%;
+            height: 1000px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+      }
       .testbox {
-      display: flex;
+      display: block;
       justify-content: center;
       align-items: center;
       height: inherit;
       padding: 20px;
+      }
+      #result{
+      display: none;
+      padding: 20px;
+      margin: 10px 0 0 0;
+      width: 100%;
+      border-radius: 6px;
+      box-shadow: 0 0 8px #669999;
       }
       form {
       width: 100%;
@@ -114,8 +130,8 @@
       display: none;
       }
       input[type=number]{
-            width: 30px;
-            }
+      width: 30px !important;
+      }
       label.radio {
       position: relative;
       display: inline-block;
@@ -177,6 +193,18 @@
       input[type=button]:hover {
       background:  #a3c2c2;
       }
+
+      table {
+      table-layout: fixed;
+      width: 100%;
+      border-collapse: collapse;
+      }
+      th, td {
+      padding: 20px;
+      border: 1px solid #669999;
+      border-radius: 1em;
+      }
+
       @media (min-width: 568px) {
       .name-item, .city-item {
       display: flex;
