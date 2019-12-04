@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sequence number</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  </head>
+  <body>
+		<script>
+				function calculate() {
+					$.ajax({
+						url: "/calc",
+						data: $('form').serialize(),
+						type: 'POST',
+						success: function(response) {
+							seq_numbers = response.split(' ')
+							
+							var perrow = 3,
+							tbl = "<table><tr><th>Number of nucleotide mutaions</th><th>Possible amino acid sequences</th><th>Integral number of amino acid sequences</th></tr><tr>";
+
+							for (var i=0; i<seq_numbers.length; i++) {
+								tbl += "<td>" + seq_numbers[i] + "</td>";
+								var next = i+1;
+								if (next%perrow==0 && next!=seq_numbers.length) {
+									tbl += "</tr><tr>";
+								}
+							}
+							tbl += "</tr></table>";
+
+
+							$('#len').html(tbl) 
+						},
+						error: function(error) {
+							$('#len').html(error) 
+						}
+					});
+				}
+		</script>
+    <div class="testbox">
+      <form method="post" role="input_form">
+        <div class="colums">
+          <div class="item">
+            <label for="name">Sequence</label>
+            <input id="name" type="text" name="sequence"/>
+		  </div>
+		</div>
+		<div class="item">
+			<p>Choose codon table type</p>
+			<select name = "codon_table">
+			  <option value="1" selected>The Standard Code</option>
+			  <option value="2">The Vertebrate Mitochondrial Code</option>
+			  <option value="3">The Yeast Mitochondrial Code</option>
+			  <option value="4">The Mold, Protozoan, and Coelenterate Mitochondrial Code and the Mycoplasma/Spiroplasma Code</option>
+			  <option value="5" >The Invertebrate Mitochondrial Code</option>
+			  <option value="6">The Ciliate, Dasycladacean and Hexamita Nuclear Code</option>
+			  <option value="9">The Echinoderm Mitochondrial Code</option>
+			  <option value="10">The Euplotid Nuclear Code</option>
+			  <option value="11" >The Bacterial "Code"</option>
+			  <option value="12">The Alternative Yeast Nuclear Code</option>
+			  <option value="13">VegetThe Ascidian Mitochondrial Codearian</option>
+			  <option value="14">The Flatworm Mitochondrial Code</option>
+			  <option value="15" >Blepharisma Nuclear Code</option>
+			</select>
+		</div>
+        <div class="question">
+          <label>Mutate first codon?</label>
+          <div class="question-answer">
+            <div>
+              <input type="radio" value="1" id="radio_1" name="mutate" checked = 'checked'/>
+              <label for="radio_1" class="radio"><span>Yes</span></label>
+            </div>
+            <div>
+              <input  type="radio" value="0" id="radio_2" name="mutate"/>
+              <label for="radio_2" class="radio"><span>No</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="btn-block">
+		  <input type="button" value="Calculate" onclick="calculate()">
+		</div>
+	</div>
+	  </form>
+	</div>
+
+	<div class = 'testbox'>
+		<div id = 'len'>
+		</div>
+		<div id = 'test'>
+			</div>
+		
+	</div>
+
+  </body>
+</html>
