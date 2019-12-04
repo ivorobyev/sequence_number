@@ -12,7 +12,7 @@ def calculate():
     seq = request.form['sequence'].upper()
     mutate_first_codon = request.form['mutate']
     codon_table = sn.get_codon_table(request.form['codon_table'])
-    max_nmut = 30
+    max_nmut = request.form['max_mutations']
     s = sn.get_sequence_number(seq, mutate_first_codon, max_nmut, codon_table)
     return s
 

@@ -113,6 +113,9 @@
       input[type=radio], input[type=checkbox]  {
       display: none;
       }
+      input[type=number]{
+            width: 30px;
+            }
       label.radio {
       position: relative;
       display: inline-block;
