@@ -1,9 +1,10 @@
-function make_table(res_list){
+function make_table(res_list, t_name){
     res_list = res_list.trim()
     seq_numbers = res_list.split(' ')
             
     var perrow = 3,
-    tbl = "<table id = 'sequence_number'><tr><th>Number of nucleotide mutaions</th><th>Possible amino acid sequences</th><th>Integral number of amino acid sequences</th></tr><tr>";
+
+    tbl = "<div class = 'res_table'><h3>"+t_name+"</h3><table id = '"+t_name+"'><tr><th>Number of nucleotide mutaions</th><th>Possible amino acid sequences</th><th>Integral number of amino acid sequences</th></tr><tr>";
 
     for (var i=0; i<seq_numbers.length; i++) {
         tbl += "<td>" + seq_numbers[i] + "</td>";
@@ -13,10 +14,10 @@ function make_table(res_list){
         }
     }
     tbl += "</tr></table>";
-    tbl += '<br/><a download="sequnce_number.csv" href="#" onclick="return ExcellentExport.csv(this, \'sequence_number\');">Export to CSV</a>'
+    tbl += "<br/><a download=\"sequnce_number.csv\" href=\"#\" onclick=\"return ExcellentExport.csv(this, \'"+t_name+"\');\">Export to CSV</a>"
+    tbl += "</div>"
 
-    $('#result').show()
-    $('#len').html(tbl) 
+    return tbl
 
 }
 
@@ -38,7 +39,13 @@ function calculate() {
         processData: false, 
         contentType: false,
         success: function(response) {
-            make_table(response)
+            var html = ''
+            $.each(JSON.parse(response), function(val, key) {
+                html += make_table(key, val)
+              });
+
+            $('#result').show()
+            $('#len').html(html)
         },
         error: function(response) {
             $('#result').show()

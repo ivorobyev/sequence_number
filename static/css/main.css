@@ -40,6 +40,9 @@
       border-radius: 6px;
       box-shadow: 0 0 5px #A2BE15;
       }
+      .res_table{
+      padding: 30px
+      }
       form {
       width: 100%;
       padding: 20px;
