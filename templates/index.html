@@ -7,59 +7,24 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 	<script src="{{ url_for('static', filename='js/excellentexport.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </head>
   <body>
-		<script>
-				function calculate() {
-					if ($.trim($('#name').val()) == ""){
-						alert('Empty sequence')
-						exit()
-					}
-					
-					$.ajax({
-						url: "/calc",
-						data: $('form').serialize(),
-						type: 'POST',
-						success: function(response) {
-							response = response.trim()
-							seq_numbers = response.split(' ')
-							
-							var perrow = 3,
-							tbl = "<table id = 'sequence_number'><tr><th>Number of nucleotide mutaions</th><th>Possible amino acid sequences</th><th>Integral number of amino acid sequences</th></tr><tr>";
-
-							for (var i=0; i<seq_numbers.length; i++) {
-								tbl += "<td>" + seq_numbers[i] + "</td>";
-								var next = i+1;
-								if (next%perrow==0 && next!=seq_numbers.length) {
-									tbl += "</tr><tr>";
-								}
-							}
-							tbl += "</tr></table>";
-							tbl += '<br/><a download="sequnce_number.csv" href="#" onclick="return ExcellentExport.csv(this, \'sequence_number\');">Export to CSV</a>'
-
-							$('#result').show()
-							$('#len').html(tbl) 
-						},
-						error: function(response) {
-							$('#result').show()
-							$('#len').html("<p class = 'error'>ERROR!</p>") 
-						}
-					});
-				}
-		</script>
 	<div class ='container'>
     <div class="testbox">
 	  <div class="banner">
 		<h1>Sequence number</h1>
-		<p>The script calculates the number of amino acids sequences 
+		<p>The application calculates the number of amino acids sequences 
 			reachable by a given number of nucleotide substitution</p>
 		<p><a href = 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0182525' target = '_blank'>Article link</a></p>
 	  </div>
       <form method="post" role="input_form">
-        <div class="colums">
+        <div class="columns">
           <div class="item">
             <label for="name">Sequence</label>
-            <input id="name" type="text" name="sequence"/>
+			<input id="name" type="text" name="sequence"/>
+			<label for="file">Select a file</label>
+            <input id="seq_file" name="seq_file" type="file">
 		  </div>
 		</div>
 		<div class="item">

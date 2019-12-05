@@ -1,79 +1,48 @@
+function calculate() {
+    if ($.trim($('#name').val()) == ""){
+        alert('Empty sequence')
+        exit()
+    }
 
-(function ($) {
-    "use strict";
+    var file = $('#seq_file');
 
+    if (file.prop('files').length) {
+      var formData = new FormData($('form')[0]);
+      formData.append('seq', file.prop('files')[0]);
+    }
 
-    /*==================================================================
-    [ Validate after type ]*/
-    $('.validate-input .input100').each(function(){
-        $(this).on('blur', function(){
-            if(validate(this) == false){
-                showValidate(this);
+    event.preventDefault();
+
+    $.ajax({
+        url: "/calc",
+        data: formData,
+        type: 'POST',
+        cache: false,             
+        processData: false, 
+        contentType: false,
+        success: function(response) {
+            response = response.trim()
+            seq_numbers = response.split(' ')
+            
+            var perrow = 3,
+            tbl = "<table id = 'sequence_number'><tr><th>Number of nucleotide mutaions</th><th>Possible amino acid sequences</th><th>Integral number of amino acid sequences</th></tr><tr>";
+
+            for (var i=0; i<seq_numbers.length; i++) {
+                tbl += "<td>" + seq_numbers[i] + "</td>";
+                var next = i+1;
+                if (next%perrow==0 && next!=seq_numbers.length) {
+                    tbl += "</tr><tr>";
+                }
             }
-            else {
-                $(this).parent().addClass('true-validate');
-            }
-        })    
-    })
-  
-  
-    /*==================================================================
-    [ Validate ]*/
-    var input = $('.validate-input .input100');
+            tbl += "</tr></table>";
+            tbl += '<br/><a download="sequnce_number.csv" href="#" onclick="return ExcellentExport.csv(this, \'sequence_number\');">Export to CSV</a>'
 
-    $('.validate-form').on('submit',function(){
-        var check = true;
-
-        for(var i=0; i<input.length; i++) {
-            if(validate(input[i]) == false){
-                showValidate(input[i]);
-                check=false;
-            }
+            $('#result').show()
+            $('#len').html(tbl) 
+        },
+        error: function(response) {
+            $('#result').show()
+            $('#len').html("<p class = 'error'>ERROR!</p>") 
         }
-
-        return check;
     });
-
-
-    $('.validate-form .input100').each(function(){
-        $(this).focus(function(){
-           hideValidate(this);
-           $(this).parent().removeClass('true-validate');
-        });
-    });
-
-     function validate (input) {
-        if($(input).attr('type') == 'email' || $(input).attr('name') == 'email') {
-            if($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
-                return false;
-            }
-        }
-        else {
-            if($(input).val().trim() == ''){
-                return false;
-            }
-        }
-    }
-
-    function showValidate(input) {
-        var thisAlert = $(input).parent();
-
-        $(thisAlert).addClass('alert-validate');
-
-        $(thisAlert).append('<span class="btn-hide-validate">&#xf136;</span>')
-        $('.btn-hide-validate').each(function(){
-            $(this).on('click',function(){
-               hideValidate(this);
-            });
-        });
-    }
-
-    function hideValidate(input) {
-        var thisAlert = $(input).parent();
-        $(thisAlert).removeClass('alert-validate');
-        $(thisAlert).find('.btn-hide-validate').remove();
-    }
-    
-    
-
-})(jQuery);
+}
