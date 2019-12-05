@@ -53,7 +53,7 @@ def get_codon_variations(codon, codon_table):
     variations = []
     for var in variations_sorted:
         amino_acid_m = translate(var[0], codon_table) 
-        if (amino_acid_m not in [i[0] for i in variations]) and (amino_acid_m != '*'):
+        if (amino_acid_m not in [i[0] for i in variations]):
             variations.append([amino_acid_m, var[1]])
     
     variations_count = {
