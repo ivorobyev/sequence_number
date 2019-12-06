@@ -1,24 +1,33 @@
-function make_table(res_list, t_name){
+function make_table(results, t_name){
+    res_list = results.toString().split(',')[0]
+    err_msg = results.toString().split(',')[1]
     res_list = res_list.trim()
     seq_numbers = res_list.split(' ')
             
     var perrow = 3,
-
-    tbl = "<div class = 'res_table'><h3>"+t_name+"</h3><table id = '"+t_name+"'><tr><th>Number of nucleotide mutaions</th><th>Possible amino acid sequences</th><th>Integral number of amino acid sequences</th></tr><tr>";
-
-    for (var i=0; i<seq_numbers.length; i++) {
-        tbl += "<td>" + seq_numbers[i] + "</td>";
-        var next = i+1;
-        if (next%perrow==0 && next!=seq_numbers.length) {
-            tbl += "</tr><tr>";
+    tbl =  ''
+    if (err_msg.indexOf('ERROR') == -1){
+        tbl = "<div class = 'res_table'><h3>"+t_name+"</h3><table id = '"+t_name+"'><tr><th>Number of nucleotide mutaions</th><th>Possible amino acid sequences</th><th>Integral number of amino acid sequences</th></tr><tr>";
+        if (err_msg.indexOf('WARNING') != -1){
+            tbl += "<p class = 'error'>"+err_msg+"</p>"
         }
+        for (var i=0; i<seq_numbers.length; i++) {
+            tbl += "<td>" + seq_numbers[i] + "</td>";
+            var next = i+1;
+            if (next%perrow==0 && next!=seq_numbers.length) {
+                tbl += "</tr><tr>";
+            }
+        }
+        tbl += "</tr></table>";
+        tbl += "<br/><a download=\"sequnce_number.csv\" href=\"#\" onclick=\"return ExcellentExport.csv(this, \'"+t_name+"\');\">Export to CSV</a>"
+        tbl += "</div>"
+
+        
     }
-    tbl += "</tr></table>";
-    tbl += "<br/><a download=\"sequnce_number.csv\" href=\"#\" onclick=\"return ExcellentExport.csv(this, \'"+t_name+"\');\">Export to CSV</a>"
-    tbl += "</div>"
-
+    else {
+        tbl = "<div class = 'res_table'><h3>"+t_name+"</h3><p class = 'error'>"+err_msg+"</p></div>"
+    }
     return tbl
-
 }
 
 function calculate() {
