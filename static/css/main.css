@@ -196,9 +196,13 @@
 
       .error{
       color: red;
+      font-weight: bold;
+      padding-bottom: 3px;
       }
       .warning{
       color: orange;
+      font-weight: bold;
+      padding-bottom: 3px;
       }
 
       @media (min-width: 568px) {
