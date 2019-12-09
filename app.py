@@ -56,7 +56,8 @@ def calculate():
     pool = Pool(3)
     res = pool.map(get_numbers, 
                    [(records[a], a, codon_table, max_nmut, mutate_first_codon)  for a in records])
-    pool.terminate()
+    pool.close()
+    pool.join()
     
     result = {}
     for rec in res:
