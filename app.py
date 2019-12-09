@@ -6,29 +6,29 @@ from Bio import SeqIO
 app = Flask(__name__)
 
 def check_sequence(sequence, codon_table):
-    message = ''
     symbols = 'ATGCU'
-
     for a in sequence:
         if a.upper() not in symbols:
-            message += 'ERROR wrong sequence format'
-
-    if len(sequence)%3 != 0:
-        message += 'ERROR: number of nucleotiges doesn\'t divide into 3 '
+            return 'ERROR: wrong sequence format'
     
-    stop_codons = [key for key, value in codon_table.items() if value[0] == '*']
-
-    for codon in stop_codons:
+    if len(sequence)%3 != 0:
+        return 'ERROR: number of nucleotides doesn\'t divide into 3'
+    
+    message = ''
+    stop_codons_list = [key for key, value in codon_table.items() if value[0] == '*']
+    existing_stop_codons = ''
+    for codon in stop_codons_list:
         if codon in sequence:
-            message += 'sequence consists stop codons'
+            existing_stop_codons += codon +' '
+    message = 'WARNING: sequence consists stop codons ' + existing_stop_codons if existing_stop_codons != '' else ''
 
-    return 1 if message == '' else message
+    return message.strip()
     
 @app.route('/')
 def render_form():
     return render_template('index.html')
 
-@app.route('/calc', methods = ['POST'])
+@app.route('/calc', method = ['POST'])
 def calculate():
     file_ =  request.files['seq']
     mutate_first_codon = int(request.form['mutate'])
@@ -41,7 +41,15 @@ def calculate():
 
     result = {}
     for a in records:
-        result[a] = sn.get_sequence_number(records[a], mutate_first_codon, max_nmut, codon_table)
+        check = check_sequence(records[a], codon_table)
+        if check.find('ERROR') == -1:
+            result[a] = (sn.get_sequence_number(records[a], 
+                                                mutate_first_codon, 
+                                                max_nmut, 
+                                                codon_table), check)
+        else:
+            result[a] = ('none', check)
+        
 
     j = json.dumps(result)
     return j
