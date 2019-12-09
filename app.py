@@ -28,7 +28,7 @@ def check_sequence(sequence, codon_table):
 def render_form():
     return render_template('index.html')
 
-@app.route('/calc', method = ['POST'])
+@app.route('/calc', methods = ['POST'])
 def calculate():
     file_ =  request.files['seq']
     mutate_first_codon = int(request.form['mutate'])
@@ -37,7 +37,7 @@ def calculate():
 
     records = {}
     for record in SeqIO.parse(file_.filename, "fasta"):
-        records[record.id] = str(record.seq)
+        records[record.id] = str(record.seq).upper()
 
     result = {}
     for a in records:
@@ -50,7 +50,6 @@ def calculate():
         else:
             result[a] = ('none', check)
         
-
     j = json.dumps(result)
     return j
 

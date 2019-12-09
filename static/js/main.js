@@ -37,7 +37,7 @@ function calculate() {
     }
     else {
         alert('Empty file')
-        exit()
+        return
     }
 
     event.preventDefault();
@@ -49,7 +49,11 @@ function calculate() {
         cache: false,             
         processData: false, 
         contentType: false,
+        beforeSend: function() {
+            $("#loader").show();
+        },
         success: function(response) {
+            $("#loader").hide();
             var html = ''
             $.each(JSON.parse(response), function(val, key) {
                 html += make_table(key, val)
@@ -59,6 +63,7 @@ function calculate() {
             $('#len').html(html)
         },
         error: function(response) {
+            $("#loader").hide();
             $('#result').show()
             $('#len').html("<p class = 'error'>ERROR!</p>") 
         }
