@@ -107,7 +107,7 @@ def get_sequence_number(sequence, mutate_first_codon, max_nmut, codon_table):
     seq_table = ''
     nmut = 0
     while (nmut <= max_nmut) and (nmut <= max(implement.keys())[0]):
-        seq_table += '{0} {1:1e} {2:1e} '.format(nmut, implement[(nmut,length)], integral_dict[(nmut,length)])
+        seq_table += '{0} {1:3e} {2:3e} '.format(nmut, implement[(nmut,length)], integral_dict[(nmut,length)])
         nmut += 1
 
     return seq_table
