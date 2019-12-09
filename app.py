@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, json
 import sequence_number as sn
 import os
 from Bio import SeqIO
+from multiprocessing import Pool
 
 app = Flask(__name__)
 
@@ -23,6 +24,19 @@ def check_sequence(sequence, codon_table):
     message = 'WARNING: sequence consists stop codons ' + existing_stop_codons if existing_stop_codons != '' else ''
 
     return message.strip()
+
+def get_numbers(params):
+    sequence, seq_name, codon_table, max_nmut, mutate_first_codon = params
+    check = check_sequence(sequence, codon_table)
+    if check.find('ERROR') == -1:
+            res = (seq_name, sn.get_sequence_number(sequence, 
+                                                   mutate_first_codon, 
+                                                   max_nmut, 
+                                                   codon_table), check)
+    else:
+        res = (seq_name, 'none', check)
+    
+    return res
     
 @app.route('/')
 def render_form():
@@ -39,16 +53,14 @@ def calculate():
     for record in SeqIO.parse(file_.filename, "fasta"):
         records[record.id] = str(record.seq).upper()
 
+    pool = Pool(3)
+    res = pool.map(get_numbers, 
+                   [(records[a], a, codon_table, max_nmut, mutate_first_codon)  for a in records])
+    pool.terminate()
+    
     result = {}
-    for a in records:
-        check = check_sequence(records[a], codon_table)
-        if check.find('ERROR') == -1:
-            result[a] = (sn.get_sequence_number(records[a], 
-                                                mutate_first_codon, 
-                                                max_nmut, 
-                                                codon_table), check)
-        else:
-            result[a] = ('none', check)
+    for rec in res:
+        result[rec[0]] = (rec[1], rec[2])
         
     j = json.dumps(result)
     return j
