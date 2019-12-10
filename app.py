@@ -59,9 +59,7 @@ def calculate():
     pool.close()
     pool.join()
     
-    result = {}
-    for rec in res:
-        result[rec[0]] = (rec[1], rec[2])
+    result =  {rec[0]: (rec[1], rec[2]) for rec in res}
         
     j = json.dumps(result)
     return j
