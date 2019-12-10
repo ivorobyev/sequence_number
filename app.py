@@ -14,6 +14,9 @@ def check_sequence(sequence, codon_table):
     
     if len(sequence)%3 != 0:
         return 'ERROR: number of nucleotides doesn\'t divide into 3'
+
+    if(len(sequence)) >= 5000:
+        return 'ERROR: sequence too big max number is 5000'
     
     message = ''
     stop_codons_list = [key for key, value in codon_table.items() if value[0] == '*']
@@ -66,3 +69,9 @@ def calculate():
 
 if __name__ == '__main__':
     app.run()
+
+"""
+1. Проверка размера на стороне клиента
+2. Проверка формата
+3. Переключение формата записи чисел (е или степень)
+"""

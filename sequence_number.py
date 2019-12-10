@@ -112,10 +112,10 @@ def get_sequence_number(sequence, mutate_first_codon, max_nmut, codon_table):
         integral_dict[(nmut, length)] = integral
         nmut += 1
 
-    seq_table = ''
-    nmut = 0
-    while (nmut <= max_nmut) and (nmut <= max(implement.keys())[0]):
-        seq_table += '{0} {1} {2} '.format(nmut, format(implement[(nmut,length)]), format(integral_dict[(nmut,length)]))
-        nmut += 1
+    max_nmut = max(implement.keys())[0] if max_nmut >= max(implement.keys())[0] else max_nmut
+    seq_table = list(map(lambda x: '{0} {1} {2} '.format(x, 
+                                           format(implement[(x,length)]),
+                                           format(integral_dict[(x,length)])), 
+                                           [a for a in range(0,max_nmut+1)]))
 
-    return seq_table
+    return ','.join(seq_table).replace(',', '')
