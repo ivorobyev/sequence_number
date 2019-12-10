@@ -233,14 +233,16 @@
       background-color: rgb(53, 51, 50);
       z-index: 100;
       opacity: 0.7;
-      display:none;
+      display:none
       
       }
       #fountainG{
             position:relative;
             width:234px;
             height:28px;
-            margin:20% 45%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 300px
       }
       
       .fountainG{

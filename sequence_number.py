@@ -1,6 +1,14 @@
 from itertools import product
 import math
 
+def format(x): 
+    help_power = max(0, int(math.log10(x) - 7))
+    small_x = x // (10 ** help_power)
+    add_power = int(math.log10(x)) - help_power
+    m = small_x / (10 ** add_power)
+    power = math.log10(x)
+    return f"{m}e{help_power + add_power}"
+
 def get_codon_table(table_number):
     with open('translation_tables.txt', 'r') as f:
         s = f.read().partition('==== Table '+str(table_number)+' ====')[2].partition('=================')[0]
@@ -107,7 +115,7 @@ def get_sequence_number(sequence, mutate_first_codon, max_nmut, codon_table):
     seq_table = ''
     nmut = 0
     while (nmut <= max_nmut) and (nmut <= max(implement.keys())[0]):
-        seq_table += '{0} {1} {2} '.format(nmut, math.log(implement[(nmut,length)]), math.log(integral_dict[(nmut,length)]))
+        seq_table += '{0} {1} {2} '.format(nmut, format(implement[(nmut,length)]), format(integral_dict[(nmut,length)]))
         nmut += 1
 
     return seq_table
